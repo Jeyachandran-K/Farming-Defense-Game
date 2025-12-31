@@ -967,7 +967,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Player
   playerMovementSpeed: 5
   cameraPivot: {fileID: 350199971}
-  sensitivity: 1
+  sensitivity: 0.1
 --- !u!1 &1610032262
 GameObject:
   m_ObjectHideFlags: 0

@@ -11,6 +11,7 @@ public class Player : MonoBehaviour
     private Vector2 keyboardInput;
     private Vector2 mouseInput;
     private float mouseInputX;
+    private float mouseInputY;
 
     private void Awake()
     {
@@ -32,15 +33,30 @@ public class Player : MonoBehaviour
     }
     private void Update()
     {
-        keyboardInput = input.Player.Move.ReadValue<Vector2>().normalized;
+
+
+        keyboardInput = input.Player.Move.ReadValue<Vector2>();
        
-        Vector3 move = transform.right * keyboardInput.x + transform.forward * keyboardInput.y;
+        Vector3 move = (transform.right * keyboardInput.x + transform.forward * keyboardInput.y).normalized;
 
-        playerCharacterController.Move(move*Time.deltaTime*playerMovementSpeed);
+        playerCharacterController.Move(move * Time.deltaTime * playerMovementSpeed);
 
+       
+    }
+    private void LateUpdate()
+    {
+        
         mouseInput = input.Player.Look.ReadValue<Vector2>();
+        if (mouseInput.sqrMagnitude > 0.01f)
+        {
+            mouseInputX = mouseInput.x * sensitivity;
+            mouseInputY += -mouseInput.y * sensitivity;
+            mouseInputY = Mathf.Clamp(mouseInputY, -90, 90);
+
+            cameraPivot.transform.localRotation = Quaternion.Euler(mouseInputY, 0, 0);
+
+            transform.Rotate(Vector3.up * mouseInputX);
+        }
        
-        mouseInputX = mouseInput.x * sensitivity;
-        transform.Rotate(Vector3.up * mouseInputX);
     }
 }
