@@ -12,8 +12,6 @@ public class Player : MonoBehaviour
     private Vector2 mouseInput;
     private float mouseInputX;
 
-    
-
     private void Awake()
     {
         playerCharacterController = GetComponent<CharacterController>();
@@ -35,13 +33,14 @@ public class Player : MonoBehaviour
     private void Update()
     {
         keyboardInput = input.Player.Move.ReadValue<Vector2>().normalized;
-        mouseInput = input.Player.Look.ReadValue<Vector2>();
-
-         mouseInputX += mouseInput.x*Time.deltaTime*sensitivity;
+       
         Vector3 move = transform.right * keyboardInput.x + transform.forward * keyboardInput.y;
 
         playerCharacterController.Move(move*Time.deltaTime*playerMovementSpeed);
 
+        mouseInput = input.Player.Look.ReadValue<Vector2>();
+       
+        mouseInputX = mouseInput.x * sensitivity;
         transform.Rotate(Vector3.up * mouseInputX);
     }
 }
