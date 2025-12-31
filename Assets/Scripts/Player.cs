@@ -1,7 +1,10 @@
+using System;
 using UnityEngine;
 
 public class Player : MonoBehaviour
 {
+    public static Player Instance { get; private set; }
+
     [SerializeField] private float playerMovementSpeed;
     [SerializeField] private Transform cameraPivot;
     [SerializeField] private float sensitivity;
@@ -13,8 +16,11 @@ public class Player : MonoBehaviour
     private float mouseInputX;
     private float mouseInputY;
 
+    public event EventHandler OnSeeingSoilShop;
+
     private void Awake()
     {
+        Instance = this;
         playerCharacterController = GetComponent<CharacterController>();
         input = new InputSystem_Actions();
     }
@@ -40,7 +46,7 @@ public class Player : MonoBehaviour
         Vector3 move = (transform.right * keyboardInput.x + transform.forward * keyboardInput.y).normalized;
 
         playerCharacterController.Move(move * Time.deltaTime * playerMovementSpeed);
-
+        DetectShop();
        
     }
     private void LateUpdate()
@@ -58,5 +64,18 @@ public class Player : MonoBehaviour
             transform.Rotate(Vector3.up * mouseInputX);
         }
        
+    }
+    public void DetectShop()
+    {
+        float playerHeight = 2f;
+        float playerRadius = 0.5f;
+        float maxDistance = 2f;
+        if(Physics.CapsuleCast(transform.position, transform.position + new Vector3(0,playerHeight,0), playerRadius, transform.forward,out RaycastHit raycastHit,maxDistance))
+        {
+            if(raycastHit.collider.TryGetComponent<SoilShop>(out SoilShop soilShop))
+            {
+                OnSeeingSoilShop?.Invoke(this,EventArgs.Empty);
+            }
+        }
     }
 }

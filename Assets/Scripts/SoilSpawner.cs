@@ -6,6 +6,7 @@ public class SoilSpawner : MonoBehaviour
     [SerializeField] private GameObject soilPrefab;
 
     private float heightOffset = 0.5f;
+
     private void Start()
     {
         SpawnSoil();
@@ -18,5 +19,6 @@ public class SoilSpawner : MonoBehaviour
 
         spawnedSoil.transform.SetParent(parent, true);
         spawnedSoil.transform.localPosition = new Vector3(0, heightOffset,0);
+
     }
 }
