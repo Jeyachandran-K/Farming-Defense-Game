@@ -17,7 +17,7 @@ public class SoilSpawner : MonoBehaviour
     private void Start()
     {
         gridManager = new GridManager(10, 10, 1);
-        SpawnSoilOnGround();    
+        // SpawnSoilOnGround();    
     }
     private void SpawnSoil()
     {
